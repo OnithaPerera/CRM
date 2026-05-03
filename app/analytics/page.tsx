@@ -3,9 +3,27 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
+interface StageData {
+    stage: string;
+    count: number;
+}
+
+interface TrainerData {
+    name: string;
+    trainees: number;
+}
+
+interface Recruit {
+    id: string;
+    recruit_name: string;
+    trainer: string;
+    stage: string;
+    license_status: boolean;
+}
+
 export default function AnalyticsDashboard() {
-    const [stageData, setStageData] = useState([]);
-    const [trainerData, setTrainerData] = useState([]);
+    const [stageData, setStageData] = useState<StageData[]>([]);
+    const [trainerData, setTrainerData] = useState<TrainerData[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -13,12 +31,12 @@ export default function AnalyticsDashboard() {
             const { data, error } = await supabase.from('recruits').select('*');
 
             if (!error && data) {
-                const stages = {};
-                data.forEach(r => { stages[r.stage] = (stages[r.stage] || 0) + 1; });
+                const stages: { [key: string]: number } = {};
+                (data as Recruit[]).forEach(r => { stages[r.stage] = (stages[r.stage] || 0) + 1; });
                 setStageData(Object.keys(stages).map(key => ({ stage: key, count: stages[key] })));
 
-                const trainers = {};
-                data.forEach(r => { if (r.trainer) trainers[r.trainer] = (trainers[r.trainer] || 0) + 1; });
+                const trainers: { [key: string]: number } = {};
+                (data as Recruit[]).forEach(r => { if (r.trainer) trainers[r.trainer] = (trainers[r.trainer] || 0) + 1; });
                 setTrainerData(Object.keys(trainers).map(key => ({ name: key, trainees: trainers[key] })));
             }
             setLoading(false);
@@ -77,4 +95,3 @@ export default function AnalyticsDashboard() {
         </div>
     );
 }
-```</ResponsiveContainer></ResponsiveContainer>

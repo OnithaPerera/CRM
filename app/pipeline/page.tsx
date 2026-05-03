@@ -2,10 +2,20 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
-const STAGES = ['New', 'Dialing', 'Stage 1', 'Stage 2', 'Stage 3', 'Closing'];
+// Define the Recruit Type
+interface Recruit {
+    id: string;
+    recruit_name: string;
+    trainer: string;
+    stage: string;
+    license_status: boolean;
+}
+
+const STAGES: string[] = ['New', 'Dialing', 'Stage 1', 'Stage 2', 'Stage 3', 'Closing'];
 
 export default function PipelineView() {
-    const [recruits, setRecruits] = useState([]);
+    // Use the interface to type the state array
+    const [recruits, setRecruits] = useState<Recruit[]>([]);
 
     useEffect(() => {
         const fetchRecruits = async () => {
@@ -14,7 +24,7 @@ export default function PipelineView() {
                 .select('*');
 
             if (!error && data) {
-                setRecruits(data);
+                setRecruits(data as Recruit[]); // Cast the incoming data
             }
         };
 

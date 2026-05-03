@@ -6,7 +6,7 @@ export const metadata = {
   description: 'Recruiting and Pipeline Management',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className="bg-gray-50 text-gray-900 font-sans antialiased flex">

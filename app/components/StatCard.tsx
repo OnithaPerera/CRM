@@ -1,4 +1,14 @@
-export default function StatCard({ title, value, trend, trendLabel, icon }) {
+import React from 'react';
+
+interface StatCardProps {
+    title: string;
+    value: string | number;
+    trend?: 'up' | 'down' | string | null;
+    trendLabel?: string | null;
+    icon?: React.ReactNode;
+}
+
+export default function StatCard({ title, value, trend, trendLabel, icon }: StatCardProps) {
     return (
         <div className="bg-white p-6 rounded-2xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.1)] border border-slate-100 transition-all hover:shadow-md flex flex-col justify-between">
             <div className="flex justify-between items-start mb-4">
