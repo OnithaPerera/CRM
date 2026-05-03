@@ -2,15 +2,22 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
+interface FormData {
+    recruit_name: string;
+    trainer: string;
+    stage: string;
+    license_status: boolean;
+}
+
 export default function AddRecruitForm() {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         recruit_name: '',
         trainer: '',
         stage: 'New',
         license_status: false
     });
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const { data, error } = await supabase
             .from('recruits')
